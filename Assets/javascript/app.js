@@ -51,7 +51,7 @@ $(document).ready(function () {
         },
         {
             question: "In the Salamanders novels, who was Hazon Dak'ir's rival?",
-            answers: ["Zek Tsu,gan", "Vulkan He'stan", "Tu'Shan", "Sol Ba'ken"],
+            answers: ["Zek Tsu'gan", "Vulkan He'stan", "Tu'Shan", "Sol Ba'ken"],
             correct: "0",
             image: ("Assets/images/FiredrakeBookCover.jpg")
         },
@@ -72,7 +72,110 @@ $(document).ready(function () {
             answers: ["I and XX", "II and XI", "X and XVIII", "XIV and XVI"],
             correct: "1",
             image: ("Assets/images/Missing.jpg")
+        },
+        {
+            question: "In the relm of chaos, who is the god of anarchy and terror?",
+            answers: ["Malal", "Gork", "Khorne", "Khaine"],
+            correct: "0",
+            image: ("Assets/images/Malal.jpg")
+        },
+        {
+            question: "What was the name of the genestealer cult that Ortan Cassius and his kill-team were sent to exterminate?",
+            answers: ["Pauper Princes", "Twisted Helix", "Cult of the Four-Armed Emperor", "Genestealer cults don't have names"],
+            correct: "2",
+            image: ("Assets/images/Cultofthe4ArmedEmperor.jpg")
+        },
+        {
+            question: "What sector of the Milky Way Galaxy is beyond the reach of the astranomicon?",
+            answers: ["Calixis Sector", "Aurelia Sector", "Gothic Sector", "Koronus Sector"],
+            correct: "3",
+            image: ("Assets/images/Koronus_Expanse")
+        },
+        {
+            question: "What area of Earth was the Emperor of Mankind born?",
+            answers: ["Germany", "Turkey", "Nepal", "Iran"],
+            correct: "1",
+            image: ("Assets/images/turkey.gif")
         }
-    ]
+    ];
+    function gameStart() {
+        console.log("Game Start");
+        var correctAnswers = 0;
+        var wrongAnswers = 0;
+        loadQuiz();
+    };
+
+    function loadQuiz() {
+        answered = false;
+        timeRemaining = 15;
+        intervalID = setInterval(timer, 1000);
+        if (answered === false) {
+            timer();
+        }
+        correct = triviaQuestions[indexQnA].correct;
+        let = triviaQuestions[indexQnA].question;
+        $('#question').html(question);
+        for (let i = 0; i < 4; i++) {
+            var answer = triviaQuestions[indexQnA].answer[i];
+            $('#answers').append('<h3 class=answersAll id='+ i + '>' + answer + '</h3>');
+        }
+        $("h3").click( function() {
+            let guess = $(this).attr('id');
+            if (guess === correct) {
+                answered = true; 
+                $('#question').text("You are correct!");
+                correctAnswer();
+            }
+            else {
+                answered = true; 
+                $('#question').text("Incorrect! The answer is: " + triviaQuestions[indexQnA].answer[correct]);
+                incorrectAnswer();
+            }
+        });
+    }
+
+    function timer() {
+        if (timeRemaining === 0) {
+            answered = true;
+            clearInterval(intervalID);
+            $('#question').text("The answer is: " + triviaQuestions[indexQnA].answer[correct]);
+            incorrectAnswer();
+        }
+        else if (answered === true) {
+            clearInterval(intervalID);
+        }
+        else {
+            timeRemaining--;
+        }
+    }
+
+    function correctAnswer() {
+        correctAnswer++;
+        resetRound();
+    }
+
+    function incorrectAnswer() {
+        correctAnswer--;
+        resetRound();
+    }
+
+    function resetRound() {
+        $('.answersAll').remove();
+        $('#answers').append('<img class=answerImage src="' + triviaQuestions[indexQnA].image + '">');
+        indexQnA++;
+        if (indexQnA < triviaQuestions.length) {
+            setTimeout(function () {
+                loadQuiz();
+                $('.answerImage').remove();
+            }, 5000);
+        }
+        else {
+            setTimeout(function () {
+                $('#question').remove();
+                $('#timeRemaining').remove();
+                $('.answerImage').remove();
+            })
+        }
+    }
 })
 
