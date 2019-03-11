@@ -1,1 +1,2 @@
 # TriviaGame
+This is a trivia game that I initially made for a coding class that I am taking. As the name would imply it is a trivia game, specifically it is a trivia game that revolves around the Warhammer 40,000 universe. It is basically a website that (along with the basic HTML and CSS) uses JavaScript and jQuery to create a timed quiz that allows 15 seconds for a user to answer a question. The page will show the user if they answered correctly or not
