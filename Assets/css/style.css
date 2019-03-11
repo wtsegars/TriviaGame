@@ -1,0 +1,21 @@
+body {
+    background-color: black;
+    border: gold;
+    border-style: double;
+    border-width: 2px;
+}
+button {
+    margin-left: 46%;
+    margin-bottom: 2px;
+}
+.text {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white;
+    text-align: center;
+    word-wrap: break-word;
+}
+.index-header {
+    font-family: 'MedievalSharp', cursive;
+    color: white;
+    text-align: center;
+}

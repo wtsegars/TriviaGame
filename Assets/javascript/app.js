@@ -1,7 +1,7 @@
 $(document).ready(function () {
     var correctAnswers = 0;
     var wrongAnswers = 0;
-    var timeLeft = 15;
+    var timeRemaining = 15;
     var intervalID;
     var indexQnA = 0;
     var answered = false;
@@ -83,13 +83,13 @@ $(document).ready(function () {
             question: "What was the name of the genestealer cult that Ortan Cassius and his kill-team were sent to exterminate?",
             answers: ["Pauper Princes", "Twisted Helix", "Cult of the Four-Armed Emperor", "Genestealer cults don't have names"],
             correct: "2",
-            image: ("Assets/images/Cultofthe4ArmedEmperor.jpg")
+            image: ("Assets/images/Cultofthe4ArmedEmperorIcon.jpg")
         },
         {
             question: "What sector of the Milky Way Galaxy is beyond the reach of the astranomicon?",
             answers: ["Calixis Sector", "Aurelia Sector", "Gothic Sector", "Koronus Sector"],
             correct: "3",
-            image: ("Assets/images/Koronus_Expanse")
+            image: ("Assets/images/Koronus_Expanse.jpg")
         },
         {
             question: "What area of Earth was the Emperor of Mankind born?",
@@ -100,35 +100,34 @@ $(document).ready(function () {
     ];
     function gameStart() {
         console.log("Game Start");
-        var correctAnswers = 0;
-        var wrongAnswers = 0;
+        correctAnswers = 0;
+        wrongAnswers = 0;
         loadQuiz();
     };
-
     function loadQuiz() {
         answered = false;
-        timeRemaining = 15;
+        timeLeft = 15;
         intervalID = setInterval(timer, 1000);
         if (answered === false) {
             timer();
         }
         correct = triviaQuestions[indexQnA].correct;
-        let = triviaQuestions[indexQnA].question;
+        let question = triviaQuestions[indexQnA].question;
         $('#question').html(question);
         for (let i = 0; i < 4; i++) {
-            var answer = triviaQuestions[indexQnA].answer[i];
-            $('#answers').append('<h3 class=answersAll id='+ i + '>' + answer + '</h3>');
+            var answer = triviaQuestions[indexQnA].answers[i];
+            $('#answers').append('<h3 class=answersAll id=' + i + '>' + answer + '</h3>');
         }
-        $("h3").click( function() {
+        $("h3").click(function () {
             let guess = $(this).attr('id');
             if (guess === correct) {
-                answered = true; 
+                answered = true;
                 $('#question').text("You are correct!");
                 correctAnswer();
             }
             else {
-                answered = true; 
-                $('#question').text("Incorrect! The answer is: " + triviaQuestions[indexQnA].answer[correct]);
+                answered = true;
+                $('#question').text("Incorrect! The answer is: " + triviaQuestions[indexQnA].answers[correct]);
                 incorrectAnswer();
             }
         });
@@ -138,24 +137,26 @@ $(document).ready(function () {
         if (timeRemaining === 0) {
             answered = true;
             clearInterval(intervalID);
-            $('#question').text("The answer is: " + triviaQuestions[indexQnA].answer[correct]);
+            $('#question').text("The answer is: " + triviaQuestions[indexQnA].answers[correct]);
             incorrectAnswer();
         }
         else if (answered === true) {
             clearInterval(intervalID);
+            timeRemaining = 15;
         }
         else {
             timeRemaining--;
+            $('#time').text(timeRemaining);
         }
     }
 
     function correctAnswer() {
-        correctAnswer++;
+        correctAnswers++;
         resetRound();
     }
 
     function incorrectAnswer() {
-        correctAnswer--;
+        wrongAnswers++;
         resetRound();
     }
 
@@ -174,8 +175,15 @@ $(document).ready(function () {
                 $('#question').remove();
                 $('#timeRemaining').remove();
                 $('.answerImage').remove();
-            })
+                $('#answers').append('<h4 class= answersAll end>Correct Answers: ' + correctAnswers + '</h4>');
+                $('#answers').append('<h4 class= answersAll end>Incorrect Answers: ' + wrongAnswers + '</h4>');
+                setTimeout(function () {
+                    location.reload();
+                }, 7000);
+            }, 5000);
         }
-    }
+    };
+
+    gameStart()
 })
 
